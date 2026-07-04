@@ -1,28 +1,41 @@
-- name: Checkout Repo
-  uses: actions/checkout@v4
+name: Render Manim Video
 
-- name: Setup Python
-  uses: actions/setup-python@v5
-  with:
-    python-version: "3.11"
+on:
+  workflow_dispatch:
 
-- name: Install System Dependencies
-  run: |
-    sudo apt-get update
-    sudo apt-get install -y \
-      ffmpeg \
-      pkg-config \
-      libcairo2-dev \
-      libpango1.0-dev \
-      pango1.0-tools
+jobs:
+  render:
+    runs-on: ubuntu-latest
 
-- name: Install Manim
-  run: |
-    pip install manim==0.20.1
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
 
-- name: Render
-  run: |
-    manim -pql gradient_descent_reel.py GradientDescentReel
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+          ffmpeg \
+          pkg-config \
+          libcairo2-dev \
+          libpango1.0-dev \
+          pango1.0-tools
+
+      - name: Install Manim
+        run: |
+          pip install manim==0.20.1
+
+      - name: Render Video
+        run: |
+          manim -pql gradient_descent_reel.py GradientDescentReel
+
+      - name: Upload Video
+        uses: actions/upload-artifact@v4
         with:
           name: rendered-video
           path: media/videos/
