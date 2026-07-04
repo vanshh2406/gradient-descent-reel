@@ -1,0 +1,36 @@
+name: Render Manim Video
+
+on:
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Manim
+        run: |
+          pip install manim
+
+      - name: Render Video
+        run: |
+          manim -pql gradient_descent_reel.py GradientDescentReel
+
+      - name: Upload Video
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendered-video
+          path: media/videos/
