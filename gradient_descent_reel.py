@@ -366,10 +366,7 @@ class GradientDescentReel(ThreeDScene):
         self.move_camera(phi=0, theta=-90 * DEGREES, zoom=1, run_time=1.0)
         self.play(FadeOut(self.surface), FadeOut(self.trail), FadeOut(self.ball), FadeOut(self.ball_glow), run_time=0.6)
 
-        formula = MathTex(
-            r"\theta", "=", r"\theta", "-", r"\alpha", r"\nabla J(\theta)",
-            font_size=90,
-        )
+        formula = Text("θ = θ - α ∇J(θ)", font_size=60, color=WHITE)
         formula.set_color(WHITE)
         formula_glow = glow_copies(formula, NEON_CYAN, layers=5)
         group = VGroup(formula_glow, formula).move_to(ORIGIN)
